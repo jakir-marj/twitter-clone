@@ -1,4 +1,4 @@
-import 'package:appwrite_test/features/auth/login_screen.dart';
+import 'package:appwrite_test/features/auth/login_view.dart';
 import 'package:flutter/material.dart';
 
 import 'theme/app_theme.dart';
