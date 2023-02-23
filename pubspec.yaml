@@ -16,6 +16,7 @@ dependencies:
   appwrite: ^8.2.2
   flutter_riverpod: ^2.2.0
   flutter_svg: ^2.0.2
+  fpdart: ^0.4.0
 
 dev_dependencies:
   flutter_test:

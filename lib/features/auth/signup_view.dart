@@ -1,23 +1,25 @@
-import 'package:appwrite_test/features/auth/signup_view.dart';
-import 'package:appwrite_test/features/auth/widget/auth_field.dart';
-import 'package:appwrite_test/theme/pallete.dart';
+import 'package:appwrite_test/features/auth/controller/auth_controller.dart';
+import 'package:appwrite_test/features/auth/login_view.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../common/common.dart';
 import '../../constants/constants.dart';
+import '../../theme/pallete.dart';
+import 'widget/auth_field.dart';
 
-class LoginView extends ConsumerStatefulWidget {
+class SignupView extends ConsumerStatefulWidget {
   static route() => MaterialPageRoute(
-        builder: (context) => const LoginView(),
+        builder: (context) => const SignupView(),
       );
-  const LoginView({super.key});
+  const SignupView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SignupViewState();
 }
 
-class _LoginViewState extends ConsumerState<LoginView> {
+class _SignupViewState extends ConsumerState<SignupView> {
   final appbar = UIConstants.appBar();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -27,6 +29,14 @@ class _LoginViewState extends ConsumerState<LoginView> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  void onSignUp() {
+    ref.read(authControllerProvider.notifier).signUp(
+          email: emailController.text,
+          password: passwordController.text,
+          context: context,
+        );
   }
 
   @override
@@ -52,20 +62,20 @@ class _LoginViewState extends ConsumerState<LoginView> {
                 Align(
                   alignment: Alignment.topRight,
                   child: RoundedSmallButton(
-                    onTap: () {},
+                    onTap: onSignUp,
                     label: 'Done',
                   ),
                 ),
                 const SizedBox(height: 40),
                 RichText(
                   text: TextSpan(
-                    text: "Don't have an Account?",
+                    text: "Already have an account?",
                     style: const TextStyle(
                       fontSize: 16,
                     ),
                     children: [
                       TextSpan(
-                        text: ' Sign up',
+                        text: ' Login',
                         style: const TextStyle(
                           color: Pallete.blueColor,
                           fontSize: 16,
@@ -74,7 +84,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                           ..onTap = () {
                             Navigator.push(
                               context,
-                              SignupView.route(),
+                              LoginView.route(),
                             );
                           },
                       ),
