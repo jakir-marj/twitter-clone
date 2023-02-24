@@ -13,15 +13,37 @@ final authAPIProvider = Provider((ref) {
 });
 
 abstract class IAuthAPI {
+  //!SIgnUp abostract=============================
   FutureEither<model.Account> signUp({
     required String email,
     required String password,
   });
+  //!login abostract=============================
+  FutureEither<model.Session> login({
+    required String email,
+    required String password,
+  });
+//!current user abostract=============================
+  Future<model.Account?> correntUserAccount();
 }
 
 class AuthAPI implements IAuthAPI {
   final Account _account;
   AuthAPI({required Account account}) : _account = account;
+
+//! correntUserAccount override================================================
+  @override
+  Future<model.Account?> correntUserAccount() async {
+    try {
+      return await _account.get();
+    } on AppwriteException {
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+//!SIgnUp override================================================
   @override
   FutureEither<model.Account> signUp({
     required String email,
@@ -34,6 +56,32 @@ class AuthAPI implements IAuthAPI {
         password: password,
       );
       return right(account);
+    } on AppwriteException catch (e, stackTrace) {
+      return left(
+        Failure(
+          e.message ?? 'Some unexpected error occurred',
+          stackTrace,
+        ),
+      );
+    } catch (e, stackTrace) {
+      return left(
+        Failure(e.toString(), stackTrace),
+      );
+    }
+  }
+
+//! Login override================================================
+  @override
+  FutureEither<model.Session> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final session = await _account.createEmailSession(
+        email: email,
+        password: password,
+      );
+      return right(session);
     } on AppwriteException catch (e, stackTrace) {
       return left(
         Failure(
