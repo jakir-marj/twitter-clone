@@ -16,6 +16,13 @@ class CreateTweetView extends ConsumerStatefulWidget {
 }
 
 class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
+  final tweetTextController = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    tweetTextController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
@@ -38,19 +45,41 @@ class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
           ? const Loader()
           : SafeArea(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            currentUser.profilePic,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              currentUser.profilePic,
+                            ),
+                            radius: 30,
                           ),
-                          radius: 30,
-                        ),
-                      ],
-                    )
-                  ],
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: TextField(
+                              controller: tweetTextController,
+                              style: const TextStyle(
+                                fontSize: 22,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText: "What's happening?",
+                                hintStyle: TextStyle(
+                                  color: Pallete.greyColor,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              maxLines: null,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
