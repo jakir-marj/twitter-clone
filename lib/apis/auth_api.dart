@@ -24,7 +24,7 @@ abstract class IAuthAPI {
     required String password,
   });
 //!current user abostract=============================
-  Future<model.Account?> correntUserAccount();
+  Future<model.Account?> currentUserAccount();
 }
 
 class AuthAPI implements IAuthAPI {
@@ -33,7 +33,7 @@ class AuthAPI implements IAuthAPI {
 
 //! correntUserAccount override================================================
   @override
-  Future<model.Account?> correntUserAccount() async {
+  Future<model.Account?> currentUserAccount() async {
     try {
       return await _account.get();
     } on AppwriteException {

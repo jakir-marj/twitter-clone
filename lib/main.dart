@@ -4,6 +4,7 @@ import 'package:appwrite_test/features/auth/view/signup_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'features/home/view/home_view.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -25,9 +26,9 @@ class MyApp extends ConsumerWidget {
       theme: AppTheme.theme,
       home: ref.watch(currentUserAccountProvider).when(
           data: (user) {
-            // if (user != null) {
-            //   return const HomeView();
-            // }
+            if (user != null) {
+              return const HomeView();
+            }
             return const SignupView();
           },
           error: (error, sr) => ErrorPage(
