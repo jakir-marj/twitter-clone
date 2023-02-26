@@ -5,6 +5,9 @@ class AppwriteConstants {
   static const String usersCollection = '63f9139dab88fb97485f';
   static const String tweetCollection = '63fb8dd1751d71ea4c53';
   static const String imagedBucket = '63fb9cd2a1e6adce2eb8';
+
+  static  String imageUrl(String imageId) =>
+   '$endPoint/storage/buckets/$imagedBucket/files/$imageId/view?project=$projectId&mode=admin';
 }
 
 //* leptop
