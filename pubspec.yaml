@@ -17,6 +17,10 @@ dependencies:
   flutter_riverpod: ^2.2.0
   flutter_svg: ^2.0.2
   fpdart: ^0.4.0
+  image_picker: ^0.8.6+3
+  carousel_slider: ^4.2.1
+  cached_network_image: ^3.2.3
+  shimmer_animation: ^2.1.0+1
 
 dev_dependencies:
   flutter_test:
