@@ -3,6 +3,7 @@ class AppwriteConstants {
   static const String projectId = '63f4a5045dc64df90a7c';
   static const String endPoint = 'http://192.168.68.149/v1';
   static const String usersCollection = '63f9a20edd0d0a5f5c6c';
+  static const String tweetCollection = '63fb41d99ed33bb9a1cf';
 }
 
 //* leptop

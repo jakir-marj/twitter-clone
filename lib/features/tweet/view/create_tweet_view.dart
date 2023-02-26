@@ -4,6 +4,7 @@ import 'package:appwrite_test/common/common.dart';
 import 'package:appwrite_test/constants/assets_constants.dart';
 import 'package:appwrite_test/core/utils.dart';
 import 'package:appwrite_test/features/auth/controller/auth_controller.dart';
+import 'package:appwrite_test/features/tweet/controller/tweet_controller.dart';
 import 'package:appwrite_test/theme/pallete.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -36,9 +37,18 @@ class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
     setState(() {});
   }
 
+  void shareTweet() {
+    ref.read(tweetControllerProvider.notifier).shareTweet(
+          images: images,
+          text: tweetTextController.text,
+          context: context,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserDetailsProvider).value;
+    final isLoading = ref.watch(tweetControllerProvider);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -49,14 +59,14 @@ class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
         ),
         actions: [
           RoundedSmallButton(
-            onTap: () {},
+            onTap: shareTweet,
             label: 'Tweet',
             backgroundColor: Pallete.blueColor,
             textColor: Pallete.whiteColor,
           )
         ],
       ),
-      body: currentUser == null
+      body: isLoading || currentUser == null
           ? const Loader()
           : SafeArea(
               child: SingleChildScrollView(
