@@ -58,11 +58,14 @@ class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
           icon: const Icon(Icons.close),
         ),
         actions: [
-          RoundedSmallButton(
-            onTap: shareTweet,
-            label: 'Tweet',
-            backgroundColor: Pallete.blueColor,
-            textColor: Pallete.whiteColor,
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: RoundedSmallButton(
+              onTap: shareTweet,
+              label: 'Tweet',
+              backgroundColor: Pallete.blueColor,
+              textColor: Pallete.whiteColor,
+            ),
           )
         ],
       ),
