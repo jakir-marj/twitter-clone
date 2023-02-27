@@ -1,3 +1,8 @@
+import 'package:any_link_preview/any_link_preview.dart';
+import 'package:appwrite_test/constants/constants.dart';
+import 'package:appwrite_test/core/enum/tweet_type_enum.dart';
+import 'package:appwrite_test/features/tweet/widget/carousel_image.dart';
+import 'package:appwrite_test/features/tweet/widget/tweet_icon_button.dart';
 import 'package:appwrite_test/model/tweet_model.dart';
 import 'package:appwrite_test/theme/pallete.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common/common.dart';
 import '../../auth/controller/auth_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import 'hashtag_text.dart';
 
 class TweetCard extends ConsumerWidget {
   final Tweet tweet;
@@ -18,8 +25,10 @@ class TweetCard extends ConsumerWidget {
     return ref.watch(userDetailsProvider(tweet.uid)).when(
           data: (user) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: const EdgeInsets.all(10),
@@ -34,33 +43,94 @@ class TweetCard extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 15),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              child: Text(
-                                user.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Text(
+                                  user.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              "@${user.name} . ${timeago.format(tweet.tweetedAt, locale: 'en_short')}",
-                              style: const TextStyle(
-                                color: Pallete.greyColor,
-                                fontSize: 17,
+                              Text(
+                                "@${user.name} . ${timeago.format(tweet.tweetedAt, locale: 'en_short')}",
+                                style: const TextStyle(
+                                  color: Pallete.greyColor,
+                                  fontSize: 17,
+                                ),
                               ),
+                            ],
+                          ),
+                          HashtagText(text: tweet.text),
+                          if (tweet.tweetType == TweetType.image)
+                            CarouselImage(imageLinks: tweet.imageLinks),
+                          if (tweet.link.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            AnyLinkPreview(
+                              displayDirection:
+                                  UIDirection.uiDirectionHorizontal,
+                              link: 'https://${tweet.link}',
                             ),
                           ],
-                        )
-                      ],
-                    )
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 10,
+                              right: 20,
+                            ),
+                            child: Row(
+                              children: [
+                                TweetIconButton(
+                                  pathName: AssetsConstants.viewsIcon,
+                                  text: (tweet.commentIds.length +
+                                          tweet.reshareCount +
+                                          tweet.likes.length)
+                                      .toString(),
+                                  onTap: () {},
+                                ),
+                                TweetIconButton(
+                                  pathName: AssetsConstants.commentIcon,
+                                  text: tweet.commentIds.length.toString(),
+                                  onTap: () {},
+                                ),
+                                TweetIconButton(
+                                  pathName: AssetsConstants.retweetIcon,
+                                  text: tweet.reshareCount.toString(),
+                                  onTap: () {},
+                                ),
+                                TweetIconButton(
+                                  pathName: AssetsConstants.likeOutlinedIcon,
+                                  text: tweet.likes.length.toString(),
+                                  onTap: () {},
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.share_outlined,
+                                    size: 25,
+                                    color: Pallete.greyColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
-                )
+                ),
+                const Divider(
+                  color: Pallete.greyColor,
+                  thickness: 0.5,
+                ),
+                const SizedBox(height: 5),
               ],
             );
           },

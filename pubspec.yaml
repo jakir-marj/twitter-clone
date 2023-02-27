@@ -22,6 +22,7 @@ dependencies:
   cached_network_image: ^3.2.3
   shimmer_animation: ^2.1.0+1
   timeago: ^3.4.0
+  any_link_preview: ^3.0.0
 
 dev_dependencies:
   flutter_test:
