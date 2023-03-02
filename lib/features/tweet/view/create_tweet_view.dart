@@ -73,6 +73,7 @@ class _CreateTweetViewState extends ConsumerState<CreateTweetView> {
           ? const Loader()
           : SafeArea(
               child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(

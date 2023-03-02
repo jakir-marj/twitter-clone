@@ -45,6 +45,7 @@ class TweetListView extends ConsumerWidget {
                     }
 
                     return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: tweets.length,
                       itemBuilder: (context, index) {
                         final tweet = tweets[index];
@@ -57,6 +58,7 @@ class TweetListView extends ConsumerWidget {
                   ),
                   loading: () {
                     return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: tweets.length,
                       itemBuilder: (context, index) {
                         final tweet = tweets[index];
