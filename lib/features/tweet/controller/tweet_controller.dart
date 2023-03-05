@@ -6,6 +6,7 @@ import 'package:appwrite_test/core/enum/tweet_type_enum.dart';
 import 'package:appwrite_test/core/utils.dart';
 import 'package:appwrite_test/features/auth/controller/auth_controller.dart';
 import 'package:appwrite_test/model/tweet_model.dart';
+import 'package:appwrite_test/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -44,6 +45,18 @@ class TweetController extends StateNotifier<bool> {
   Future<List<Tweet>> getTweets() async {
     final tweetList = await _tweetAPI.getTweets();
     return tweetList.map((tweet) => Tweet.fromMap(tweet.data)).toList();
+  }
+
+  void likeTweet(Tweet tweet, UserModel user) async {
+    List<String> likes = tweet.likes;
+    if (tweet.likes.contains(user.uid)) {
+      likes.remove(user.uid);
+    } else {
+      likes.add(user.uid);
+    }
+    tweet = tweet.copyWith(likes: likes);
+    final res = await _tweetAPI.likeTweet(tweet);
+    res.fold((l) => null, (r) => null);
   }
 
   void shareTweet({
