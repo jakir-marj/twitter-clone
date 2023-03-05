@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite_test/apis/storage_api.dart';
 import 'package:appwrite_test/apis/tweet_api.dart';
 import 'package:appwrite_test/core/enum/tweet_type_enum.dart';
@@ -59,6 +60,48 @@ class TweetController extends StateNotifier<bool> {
     res.fold((l) => null, (r) => null);
   }
 
+  void reshareTweet(
+    Tweet tweet,
+    UserModel currentUser,
+    BuildContext context,
+  ) async {
+    tweet = tweet.copyWith(
+      retweetedBy: currentUser.name,
+      likes: [],
+      commentIds: [],
+      reshareCount: tweet.reshareCount + 1,
+    );
+
+    final res = await _tweetAPI.updateReshareCount(tweet);
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) async {
+        tweet = tweet.copyWith(
+          id: ID.unique(),
+          reshareCount: 0,
+          tweetedAt: DateTime.now(),
+        );
+        final res2 = await _tweetAPI.shareTweet(tweet);
+        res2.fold(
+          (l) => showSnackBar(context, l.message),
+          (r) => showSnackBar(context, 'Retweeted'),
+        );
+        // res2.fold(
+        //   (l) => showSnackBar(context, l.message),
+        //   (r) {
+        //     _notificationController.createNotification(
+        //       text: '${currentUser.name} reshared your tweet!',
+        //       postId: tweet.id,
+        //       notificationType: NotificationType.retweet,
+        //       uid: tweet.uid,
+        //     );
+        //     showSnackBar(context, 'Retweeted!');
+        //   },
+        // );
+      },
+    );
+  }
+
   void shareTweet({
     required List<File> images,
     required String text,
@@ -104,6 +147,8 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       id: '',
       reshareCount: 0,
+      retweetedBy: '',
+      repliedTo: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
@@ -131,6 +176,8 @@ class TweetController extends StateNotifier<bool> {
       commentIds: const [],
       id: '',
       reshareCount: 0,
+      retweetedBy: '',
+      repliedTo: '',
     );
 
     final res = await _tweetAPI.shareTweet(tweet);
