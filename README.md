@@ -1,4 +1,4 @@
-# appwrite_test
+# twitter clone
 
 A new Flutter project.
 
